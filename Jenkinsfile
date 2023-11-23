@@ -4,12 +4,13 @@ pipeline {
          maven 'maven'
          jdk 'java'
     }
-  stages('Stage-0 : Static Code Analysis') { 
+    stages {
+        stage('Stage-0 : Static Code Analysis') { 
             steps {
                 sh 'mvn verify sonar:sonar'
             }
         }
-        ('Stage-1 : Clean') { 
+        stage('Stage-1 : Clean') { 
             steps {
                 sh 'mvn clean'
             }
@@ -29,15 +30,20 @@ pipeline {
                 sh 'mvn test'
             }
         }
-      stage('Stage-5 : Package') { 
+          stage('Stage-5 : Package') { 
             steps {
                 sh 'mvn package'
             }
         }
-          stage('Stage-6 : Install') { 
+          stage('Stage-6 : Verify') { 
             steps {
-                sh 'mvn install '
+                sh 'mvn verify'
             }
         }
-          
-          
+          stage('Stage-7 : Install') { 
+            steps {
+                sh 'mvn install'
+            }
+        }
+    }
+}
